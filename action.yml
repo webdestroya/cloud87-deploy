@@ -1,0 +1,32 @@
+name: 'Cloud87 Deploy'
+author: 'Mitch Dempsey'
+branding:
+  icon: 'anchor'
+  color: 'blue'
+description: 'Deploys the current commit to Cloud87 for deployment'
+inputs:
+  project:
+    description: 'The name of the project to deploy'
+    required: true
+  api_key:
+    description: 'The project api key'
+    required: true
+  # access_key:
+  #   description: 'The AWS access key'
+  #   required: true
+  # secret_access_key:
+  #   description: 'The AWS secret access key'
+  #   required: true
+  # region:
+  #   description: 'The AWS region you would like to login to'
+  #   required: true
+outputs:
+  # tag:
+  #   description: 'Is the tag, which was pushed'
+  build_number:
+    description: 'The build number'
+  deployment_id:
+    description: 'The build number'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
