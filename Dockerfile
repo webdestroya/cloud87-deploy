@@ -4,7 +4,7 @@ LABEL "maintainer"="Mitch Dempsey"
 
 RUN apk update \
   && apk upgrade \
-  && apk add --no-cache git python py-pip bash jq \
+  && apk add --no-cache git python py-pip bash jq curl \
   && pip install awscli  \
   && apk --purge -v del py-pip
 
