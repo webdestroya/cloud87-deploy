@@ -4,15 +4,16 @@ set -e
 function main() {
   echo "" # see https://github.com/actions/toolkit/issues/168
 
-  # sanitize "${INPUT_ACCESS_KEY}" "access_key"
-  # sanitize "${INPUT_SECRET_ACCESS_KEY}" "secret_access_key"
+  sanitize "${INPUT_ACCESS_KEY}" "access_key"
+  sanitize "${INPUT_SECRET_ACCESS_KEY}" "secret_access_key"
   # sanitize "${INPUT_REGION}" "region"
   sanitize "${INPUT_PROJECT}" "project"
   sanitize "${INPUT_API_KEY}" "api_key"
 
-  # export AWS_ACCESS_KEY_ID=$INPUT_ACCESS_KEY
-  # export AWS_SECRET_ACCESS_KEY=$INPUT_SECRET_ACCESS_KEY
+  export AWS_ACCESS_KEY_ID=$INPUT_ACCESS_KEY
+  export AWS_SECRET_ACCESS_KEY=$INPUT_SECRET_ACCESS_KEY
   export AWS_DEFAULT_REGION=us-east-1
+  export AWS_REGION=us-east-1
 
   authTokenOutput=$(aws ecr get-authorization-token)
   authString=$(echo "$authTokenOutput" | jq -r '.authorizationData[].authorizationToken' | base64 -d)

@@ -11,15 +11,15 @@ inputs:
   api_key:
     description: 'The project api key'
     required: true
-  # access_key:
-  #   description: 'The AWS access key'
-  #   required: true
-  # secret_access_key:
-  #   description: 'The AWS secret access key'
-  #   required: true
-  # region:
-  #   description: 'The AWS region you would like to login to'
-  #   required: true
+  access_key:
+    description: 'The AWS access key'
+    required: true
+  secret_access_key:
+    description: 'The AWS secret access key'
+    required: true
+  region:
+    description: 'The AWS region you would like to login to'
+    required: true
 outputs:
   # tag:
   #   description: 'Is the tag, which was pushed'
