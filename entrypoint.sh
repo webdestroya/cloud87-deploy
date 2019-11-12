@@ -27,6 +27,8 @@ function main() {
 
   echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin ${REGISTRY}
 
+  # docker build -t tempimage .
+
   response=$(jq -ncM \
     --arg pid "${INPUT_PROJECT}" \
     --arg cs "${GITHUB_SHA}" \
@@ -43,7 +45,7 @@ function main() {
   deployment_id=$(echo "${response}" | jq -rcM .deploymentId)
 
   if [ "${has_error}" == "true" ]; then
-    echo "::error ${response}"
+    >&2 echo "::error ${response}"
     exit 1
   fi
 
