@@ -38,8 +38,14 @@ function main() {
       -d @- \
       https://c6c4szw7ab.execute-api.us-east-1.amazonaws.com/production/deploy)
 
+  has_error=$(echo "${response}" | jq -rcM .error)
   build_number=$(echo "${response}" | jq -rcM .buildNumber)
   deployment_id=$(echo "${response}" | jq -rcM .deploymentId)
+
+  if [ "${has_error}" == "true" ]; then
+    echo "::error ${response}"
+    exit 1
+  fi
 
   echo "::set-output name=build_number::${build_number}"
   echo "::set-output name=deployment_id::${deployment_id}"
