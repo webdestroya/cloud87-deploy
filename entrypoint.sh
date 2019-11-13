@@ -21,13 +21,18 @@ function main() {
   PASSWORD=$(echo "$authString" | cut -d: -f2)
   REGISTRY=$(echo "$authTokenOutput" | jq -r '.authorizationData[].proxyEndpoint')
 
+  AWS_ACCT_ID=$(aws sts get-caller-identity | jq -rcM .Account)
+
   if [ -z "$USERNAME" ]; then
     USERNAME="AWS"
   fi
 
   echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin ${REGISTRY}
 
-  # docker build -t tempimage .
+  reponame="${AWS_ACCT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/cloud87/${INPUT_PROJECT}"
+
+  docker build -t ${reponame}:${GITHUB_SHA} .
+  docker push ${reponame}:${GITHUB_SHA}
 
   response=$(jq -ncM \
     --arg pid "${INPUT_PROJECT}" \
@@ -43,14 +48,19 @@ function main() {
   has_error=$(echo "${response}" | jq -rcM .error)
   build_number=$(echo "${response}" | jq -rcM .buildNumber)
   deployment_id=$(echo "${response}" | jq -rcM .deploymentId)
+  tag_name=$(echo "${response}" | jq -rcM .tagName)
 
   if [ "${has_error}" == "true" ]; then
     >&2 echo "::error ${response}"
     exit 1
   fi
+  
+  docker tag ${reponame}:${GITHUB_SHA} ${reponame}:${tag_name}
+  docker push ${reponame}:${tag_name}
 
   echo "::set-output name=build_number::${build_number}"
   echo "::set-output name=deployment_id::${deployment_id}"
+  echo "::set-output name=tag_name::${tag_name}"
 
   docker logout
 }
