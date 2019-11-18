@@ -15,8 +15,6 @@ inputs:
     description: 'The Github token'
     required: true
 outputs:
-  # tag:
-  #   description: 'Is the tag, which was pushed'
   build_number:
     description: 'The build number'
   deployment_id:

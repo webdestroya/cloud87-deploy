@@ -17,15 +17,19 @@ type DeployResponse = {
 }
 
 async function run() {
-  core.debug(':: Loading input params')
-  const inputs = new Inputs()
+  try {
+    core.debug(':: Loading input params')
+    const inputs = new Inputs()
 
-  const result = await createDeployment(inputs)
+    const result = await createDeployment(inputs)
 
 
-  core.setOutput("build_number", String(result.buildNumber))
-  core.setOutput("deployment_id", String(result.deploymentId))
-
+    core.setOutput("build_number", String(result.buildNumber))
+    core.setOutput("deployment_id", String(result.deploymentId))
+  } catch(err) {
+    core.error(err)
+    core.setFailed(err.message)
+  }
 }
 
 async function createDeployment(inputs : Inputs) {
@@ -73,9 +77,9 @@ async function createDeployment(inputs : Inputs) {
 //   });
 // }
 
-try {
-  run();
-} catch(error) {
-  core.error(error)
-  core.setFailed(error.message)
-}
+// try {
+//   run();
+// } catch(error) {
+  
+// }
+run()

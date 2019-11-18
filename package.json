@@ -2,7 +2,7 @@
   "name": "cloud87-deploy",
   "version": "1.0.0",
   "description": "Cloud87 Deployment",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "ncc build -o dist src/main.ts",
     "precommit": "yarn run build && git add dist/"
