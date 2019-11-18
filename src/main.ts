@@ -1,9 +1,13 @@
 import * as core from "@actions/core"
 // import { exec } from "@actions/exec"
 import Inputs from './inputs';
+import { GitHub } from "@actions/github"
 import axios from "axios"
 
 const DEPLOY_URL = "https://c6c4szw7ab.execute-api.us-east-1.amazonaws.com/production/projects/deploy"
+
+const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY as string
+const GITHUB_SHA = process.env.GITHUB_SHA as string
 
 type DeployResponse = {
   success : boolean
@@ -21,24 +25,65 @@ async function run() {
     core.debug(':: Loading input params')
     const inputs = new Inputs()
 
+    const client = new GitHub(inputs.GithubToken, {
+      log: {
+        debug: (m : string, info? : object) => core.debug(m),
+        info: (m : string, info? : object) => core.info(m),
+        warn: (m : string, info? : object) => core.warning(m),
+        error: (m : string, info? : object) => core.error(m),
+      },
+    })
+
     const result = await createDeployment(inputs)
 
+    const {
+      buildNumber,
+      tagName,
+      deploymentId
+    } = result
 
-    core.setOutput("build_number", String(result.buildNumber))
-    core.setOutput("deployment_id", String(result.deploymentId))
+    core.debug(`:: Cloud87 BuildNumber: ${buildNumber}`)
+    core.debug(`:: Cloud87 Tag: ${tagName}`)
+
+    
+    core.setOutput("build_number", String(buildNumber))
+    core.setOutput("deployment_id", String(deploymentId))
+    core.setOutput("tag_name", String(tagName))
+    
+    await createGHRelease(client, tagName)
+    
   } catch(err) {
     core.error(err)
     core.setFailed(err.message)
   }
 }
 
+async function createGHRelease(client : GitHub, tagName : string) {
+
+  const [owner, repo] = GITHUB_REPOSITORY.split("/")
+
+  await client.repos.createRelease({
+    repo,
+    owner,
+    draft: false,
+    prerelease: false,
+    name: tagName,
+    tag_name: tagName,
+    target_commitish: GITHUB_SHA,
+  })
+}
+
+// async function createGHDeployment() {
+
+// }
+
 async function createDeployment(inputs : Inputs) {
   core.debug(":: Creating deployment")
 
   const payload = {
     project: inputs.ProjectName,
-    commitSha: process.env.GITHUB_SHA,
-    githubRepo: process.env.GITHUB_REPOSITORY,
+    commitSha: GITHUB_SHA,
+    githubRepo: GITHUB_REPOSITORY,
     githubToken: inputs.GithubToken,
   }
 

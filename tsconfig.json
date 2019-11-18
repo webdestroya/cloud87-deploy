@@ -5,6 +5,7 @@
     "noImplicitAny": true,
     "experimentalDecorators": true,
     "noFallthroughCasesInSwitch": false,
+    "allowSyntheticDefaultImports": true,
     "strictNullChecks": true,
     "removeComments": true,
     "noUnusedLocals": true,

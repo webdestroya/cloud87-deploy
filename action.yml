@@ -18,7 +18,9 @@ outputs:
   build_number:
     description: 'The build number'
   deployment_id:
-    description: 'The build number'
+    description: 'The Cloud87 Deployment ID'
+  tag_name:
+    description: 'The tag to create'
 runs:
   using: 'node12'
   main: 'dist/index.js'
