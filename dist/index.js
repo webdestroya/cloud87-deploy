@@ -4602,11 +4602,17 @@ var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
 
 const DEPLOY_URL = "https://c6c4szw7ab.execute-api.us-east-1.amazonaws.com/production/projects/deploy";
 async function run() {
-    Object(core.debug)(':: Loading input params');
-    const inputs = new inputs_Inputs();
-    const result = await createDeployment(inputs);
-    Object(core.setOutput)("build_number", String(result.buildNumber));
-    Object(core.setOutput)("deployment_id", String(result.deploymentId));
+    try {
+        Object(core.debug)(':: Loading input params');
+        const inputs = new inputs_Inputs();
+        const result = await createDeployment(inputs);
+        Object(core.setOutput)("build_number", String(result.buildNumber));
+        Object(core.setOutput)("deployment_id", String(result.deploymentId));
+    }
+    catch (err) {
+        Object(core.error)(err);
+        Object(core.setFailed)(err.message);
+    }
 }
 async function createDeployment(inputs) {
     Object(core.debug)(":: Creating deployment");
@@ -4636,13 +4642,7 @@ async function createDeployment(inputs) {
     }
     return response.data;
 }
-try {
-    run();
-}
-catch (error) {
-    Object(core.error)(error);
-    Object(core.setFailed)(error.message);
-}
+run();
 
 
 /***/ }),
