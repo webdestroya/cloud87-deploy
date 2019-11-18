@@ -4625,7 +4625,7 @@ async function createDeployment(inputs) {
     const response = await axios_default().request({
         url: DEPLOY_URL,
         method: "POST",
-        timeout: 600,
+        timeout: 60000,
         data: JSON.stringify(payload),
         headers: {
             'Content-Type': "application/json",
