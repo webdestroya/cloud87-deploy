@@ -46,6 +46,7 @@ async function createDeployment(inputs : Inputs) {
     url: DEPLOY_URL,
     method: "POST",
     timeout: 60000,
+    validateStatus: (x) => true,
     data: JSON.stringify(payload),
     headers: {
       'Content-Type': "application/json",
