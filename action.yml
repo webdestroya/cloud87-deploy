@@ -11,14 +11,8 @@ inputs:
   api_key:
     description: 'The project api key'
     required: true
-  access_key:
-    description: 'The AWS access key'
-    required: true
-  secret_access_key:
-    description: 'The AWS secret access key'
-    required: true
-  region:
-    description: 'The AWS region you would like to login to'
+  token:
+    description: 'The Github token'
     required: true
 outputs:
   # tag:
@@ -28,5 +22,5 @@ outputs:
   deployment_id:
     description: 'The build number'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'node12'
+  image: 'dist/index.js'

@@ -1,0 +1,25 @@
+{
+  "name": "cloud87-deploy",
+  "version": "1.0.0",
+  "description": "Cloud87 Deployment",
+  "main": "index.js",
+  "scripts": {
+    "build": "ncc build -m -o dist src/main.ts",
+    "precommit": "yarn run build && git add dist/"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "@actions/exec": "^1.0.1",
+    "@actions/io": "^1.0.1",
+    "axios": "^0.19.0",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.8",
+    "@zeit/ncc": "^0.20.5",
+    "typescript": "^3.7.2"
+  },
+  "author": "Mitch Dempsey",
+  "license": "UNLICENSED",
+  "private": true
+}

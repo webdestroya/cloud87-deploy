@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "preserveConstEnums": true,
+    "noImplicitAny": true,
+    "experimentalDecorators": true,
+    "noFallthroughCasesInSwitch": false,
+    "strictNullChecks": true,
+    "removeComments": true,
+    "noUnusedLocals": true,
+    "sourceMap": true,
+    "noImplicitReturns": true,
+    "strict": true,
+    "lib": [
+      "es2018"
+    ],
+    "moduleResolution": "node",
+    // "noUnusedParameters": true,
+    "target": "es2018",
+    "outDir": "./dist"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
